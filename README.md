@@ -52,7 +52,6 @@ Si deseas apoyar estos desarrollos libres e independientes y querés regalarme u
 
 ![QR Binance](https://github.com/alexiarstein/kernelinstall.github.io/blob/main/IMG_3213.png)
 
-Como las donaciones son anónimas (no se quien dona que cosa ni veo tu información personal) podés enviarme un mail a hola@goldendoglinux.org con tu nombre o apodo una vez que donaste
-para poner tu nombre en la lista de donors. (Totalmente opcional)
+Como las donaciones son anónimas (no se quien dona que cosa ni veo tu información personal) podés abrir un issue en el proyecto arriba con titulo donación y lo agrego a la lista de donors (Opcional)
 
 
