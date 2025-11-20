@@ -28,6 +28,10 @@ When compiling from source, be sure to have the required packages installed (mak
  * ElementaryOS
  * PopOS!
 
+## Y en que cambia las cosas?
+
+leé el changelog [https://cdn.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.17.8](https://cdn.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.17.8)
+
 ## Language Support
 
  * English
@@ -46,8 +50,12 @@ Thanks!
 
 -- Alexia.
 
-## To Do 
+## DONATE / DONAR AL PROYECTO
 
- * Add more language support (French, Italian, German, Dutch, Swedish, Finnish and more)
- * Add support for rhel-based and arch-based distros
+Si deseas apoyar estos desarrollos libres e independientes y querés regalarme un cafecito podés hacer una donación privada con el siguiente QR. 
+
+![QR Binance](https://github.com/alexiarstein/kernelinstall.github.io/blob/main/IMG_3213.png)
+
+Como las donaciones son anónimas (no se quien dona que cosa ni veo tu información personal) podés abrir un issue en el proyecto arriba con titulo donación y lo agrego a la lista de donors (Opcional)
+
 
