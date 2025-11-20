@@ -120,12 +120,10 @@ int run_build_with_progress(const char *cmd, const char *source_dir) {
         }
 
         // Check for packaging start
-        // Removed "building package" as it was causing false positives
-        if (strstr(line, "dpkg-buildpackage") || strstr(line, "rpmbuild")) {
+        // "dpkg-buildpackage" runs at the start, so we must wait for "dpkg-deb" which runs at the end.
+        // "Processing files:" is typical for rpmbuild end phase.
+        if (strstr(line, "dpkg-deb: building package") || strstr(line, "Processing files:")) {
             packaging_started = 1;
-            wprintw(log_win, "Packaging detected (trigger: %s). Switching to stdout...\n", line);
-            wrefresh(log_win);
-            napms(2000); // Give user time to read
             break; 
         }
     }
