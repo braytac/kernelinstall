@@ -1,0 +1,11 @@
+KERNEL INSTALLER BY Alexia Michelle
+-----------------------------------
+
+2025-11-20:
+
+- Added progressbar (Experimental) to aid the user in comprehending
+  how long is left until compilation ends.
+
+- Added fedora support (experimental)
+
+- Added a changelog (this one, heh)
