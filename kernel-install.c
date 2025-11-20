@@ -18,7 +18,7 @@
 #include "distro/linuxmint.h"
 #include "distro/fedora.h"
 
-#define APP_VERSION "1.2.0"
+#define APP_VERSION "1.2.2"
 #define _(string) gettext(string)
 #define BUBU "bubu"
 
