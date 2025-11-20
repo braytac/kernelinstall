@@ -84,10 +84,13 @@ void mint_build_and_install(const char* home, const char* version, const char* t
     run(cmd);
     
     // Compilar el kernel
+    char source_dir[512];
+    snprintf(source_dir, sizeof(source_dir), "%s/kernel_build/linux-%s", home, version);
+
     snprintf(cmd, sizeof(cmd),
-             "cd %s/kernel_build/linux-%s && fakeroot make -j$(nproc) bindeb-pkg",
-             home, version);
-    run(cmd);
+             "cd %s && fakeroot make -j$(nproc) bindeb-pkg",
+             source_dir);
+    run_build_with_progress(cmd, source_dir);
     
     // Instalar los paquetes
     snprintf(cmd, sizeof(cmd),
