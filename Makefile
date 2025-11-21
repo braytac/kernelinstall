@@ -4,12 +4,12 @@
 # --------------------------------------------------
 
 CC = gcc
-CFLAGS = -Wall -Wextra -g -D_FORTIFY_SOURCE=2
-LDFLAGS = -lncurses
+CFLAGS = -Wall -Wextra -g -D_FORTIFY_SOURCE=2 $(shell pkg-config --cflags ncursesw)
+LDFLAGS = $(shell pkg-config --libs ncursesw)
 OBJ = kernel-install.o
 TARGET = kernel-installer
 DISTRO_DIR = distro
-DISTRO_HEADERS = $(DISTRO_DIR)/common.h $(DISTRO_DIR)/debian.h $(DISTRO_DIR)/linuxmint.h $(DISTRO_DIR)/fedora.h
+DISTRO_HEADERS = $(DISTRO_DIR)/common.h $(DISTRO_DIR)/debian.h $(DISTRO_DIR)/linuxmint.h $(DISTRO_DIR)/fedora.h $(DISTRO_DIR)/distros.h
 
 # Reglas de compilación
 $(TARGET): $(OBJ)
