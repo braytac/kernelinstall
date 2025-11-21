@@ -139,6 +139,53 @@ int run_build_with_progress(const char *cmd, const char *source_dir) {
         if (fgets(line, sizeof(line), build_pipe) == NULL) {
             if (errno == EINTR) {
                 clearerr(build_pipe);
+                endwin();
+                refresh(); 
+                getmaxyx(stdscr, height, width);
+
+                log_height = height - header_height - sep1_height - sep2_height - bar_height;
+                if (log_height < 5) log_height = 5;
+
+                // redibujamos todo.
+                wresize(header_win, header_height, width);
+                mvwin(header_win, 0, 0);
+                
+                wresize(sep1_win, sep1_height, width);
+                mvwin(sep1_win, 1, 0);
+                
+                wresize(log_win, log_height, width);
+                mvwin(log_win, 2, 0);
+                
+                wresize(sep2_win, sep2_height, width);
+                mvwin(sep2_win, height - 2, 0);
+                
+                wresize(bar_win, bar_height, width);
+                mvwin(bar_win, height - 1, 0);
+
+                
+                werase(header_win);
+                snprintf(header_text, sizeof(header_text), "Alexia Kernel Installer Version %s", APP_VERSION);
+                header_len = strnlen(header_text, sizeof(header_text));
+                header_x = (width - header_len) / 2;
+                if (header_x < 0) header_x = 0;
+                if (has_colors()) wattron(header_win, COLOR_PAIR(2) | A_BOLD);
+                mvwprintw(header_win, 0, header_x, "%s", header_text);
+                if (has_colors()) wattroff(header_win, COLOR_PAIR(2) | A_BOLD);
+                wrefresh(header_win);
+
+      
+                werase(sep1_win);
+                mvwhline(sep1_win, 0, 0, ACS_HLINE, width);
+                wrefresh(sep1_win);
+
+                werase(sep2_win);
+                mvwhline(sep2_win, 0, 0, ACS_HLINE, width);
+                wrefresh(sep2_win);
+
+             
+                wrefresh(log_win); 
+                
+                
                 continue;
             }
             break;
@@ -170,9 +217,7 @@ int run_build_with_progress(const char *cmd, const char *source_dir) {
             wrefresh(bar_win);
         }
 
-        // Check for packaging start
-        // "dpkg-buildpackage" runs at the start, so we must wait for "dpkg-deb" which runs at the end.
-        // "Processing files:" is typical for rpmbuild end phase.
+        
         if (!packaging_started) {
             if (strstr(line, "dpkg-deb: building package")) {
                 packaging_started = 1;
@@ -259,29 +304,23 @@ Distro detect_distro() {
     Distro detected = DISTRO_UNKNOWN;
 
     while (fgets(line, sizeof(line), fp)) {
-        // Buscar la línea que comienza con ID=
         if (strncmp(line, "ID=", 3) == 0) {
-            // Extraer el valor del ID (sin comillas y sin newline)
             char *id_value = line + 3;
-            // Eliminar comillas si existen
             if (id_value[0] == '"') {
                 id_value++;
                 char *end_quote = strchr(id_value, '"');
                 if (end_quote) *end_quote = '\0';
             } else {
-                // Eliminar newline si no hay comillas
                 char *newline = strchr(id_value, '\n');
                 if (newline) *newline = '\0';
             }
-
-            // Buscar en la tabla de distribuciones
             for (int i = 0; distro_map[i].id != NULL; i++) {
                 if (strcmp(id_value, distro_map[i].id) == 0) {
                     detected = distro_map[i].distro_type;
                     break;
                 }
             }
-            break; // Una vez que encontramos el ID, salimos del bucle
+            break;
         }
     }
     
