@@ -134,6 +134,7 @@ int run_build_with_progress(const char *cmd, const char *source_dir) {
     char line[1024];
     int current_count = 0;
     int packaging_started = 0;
+    char current_status_msg[256] = ""; // Track status message for redraw
 
     while (1) {
         if (fgets(line, sizeof(line), build_pipe) == NULL) {
@@ -185,6 +186,14 @@ int run_build_with_progress(const char *cmd, const char *source_dir) {
              
                 wrefresh(log_win); 
                 
+                // Redraw packaging message if active
+                if (packaging_started) {
+                    werase(bar_win);
+                    if (has_colors()) wattron(bar_win, COLOR_PAIR(2) | A_BOLD);
+                    mvwprintw(bar_win, 0, 0, "%s", current_status_msg);
+                    if (has_colors()) wattroff(bar_win, COLOR_PAIR(2) | A_BOLD);
+                    wrefresh(bar_win);
+                }
                 
                 continue;
             }
@@ -221,16 +230,18 @@ int run_build_with_progress(const char *cmd, const char *source_dir) {
         if (!packaging_started) {
             if (strstr(line, "dpkg-deb: building package")) {
                 packaging_started = 1;
+                snprintf(current_status_msg, sizeof(current_status_msg), "%s", _("Building kernel and kernel headers .deb package. Please wait..."));
                 werase(bar_win);
                 if (has_colors()) wattron(bar_win, COLOR_PAIR(2) | A_BOLD);
-                mvwprintw(bar_win, 0, 0, "%s", _("Building kernel and kernel headers .deb package. Please wait..."));
+                mvwprintw(bar_win, 0, 0, "%s", current_status_msg);
                 if (has_colors()) wattroff(bar_win, COLOR_PAIR(2) | A_BOLD);
                 wrefresh(bar_win);
             } else if (strstr(line, "Processing files:")) {
                 packaging_started = 1;
+                snprintf(current_status_msg, sizeof(current_status_msg), "%s", _("Building kernel .rpm package. Please wait..."));
                 werase(bar_win);
                 if (has_colors()) wattron(bar_win, COLOR_PAIR(2) | A_BOLD);
-                mvwprintw(bar_win, 0, 0, "%s", _("Building kernel .rpm package. Please wait..."));
+                mvwprintw(bar_win, 0, 0, "%s", current_status_msg);
                 if (has_colors()) wattroff(bar_win, COLOR_PAIR(2) | A_BOLD);
                 wrefresh(bar_win);
             }
